@@ -117,39 +117,67 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 }
 
 #ifdef RGB_MATRIX_ENABLE
-    // Capslock, Scroll lock and Numlock indicator
+    // Caps lock, scroll lock and numlock indicator
     void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
-            rgb_matrix_set_color(LED_CAPS, RGB_RED);
-            rgb_matrix_set_color(LED_Q, RGB_RED);
-            rgb_matrix_set_color(LED_A, RGB_RED);
+            rgb_matrix_set_color(LED_CAPS, RGB_GOLD);
         }
+
+        // Non-alpha keys
+        rgb_matrix_set_color(LED_HASH, RGB_GOLD);
+        rgb_matrix_set_color(LED_SLSH, RGB_GOLD);
+        rgb_matrix_set_color(LED_DOT, RGB_GOLD);
+        rgb_matrix_set_color(LED_COMM, RGB_GOLD);
+
+        rgb_matrix_set_color(LED_GRV, RGB_GOLD);
+        rgb_matrix_set_color(LED_SCLN, RGB_GOLD);
+        rgb_matrix_set_color(LED_RBRC, RGB_GOLD);
+        rgb_matrix_set_color(LED_LBRC, RGB_GOLD);
+        rgb_matrix_set_color(LED_QUOT, RGB_GOLD);
+        rgb_matrix_set_color(LED_COMM, RGB_GOLD);
+        rgb_matrix_set_color(LED_BSLS, RGB_GOLD);
+                
+        // LED_TAB
+        //LED_CAPS
 
         uint8_t temp_mod = get_mods();
         uint8_t temp_osm = get_oneshot_mods();
-        //bool    is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
-        //bool    is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
+
+        bool    is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
+        bool    is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
         bool    is_cmd   = (temp_mod | temp_osm) & MOD_MASK_GUI;
 
-        if ( is_cmd ) {
-          // Helpful keyboard shortcuts
-          rgb_matrix_set_color(LED_U, RGB_RED);
-          rgb_matrix_set_color(LED_C, RGB_RED);
-          rgb_matrix_set_color(LED_V, RGB_RED);
+        if ( is_cmd && is_shift ) {
+          // Superhuman and palette apps
+          rgb_matrix_set_color(LED_H, RGB_BLUE);
+
+          // Selection-area screenshot
+          rgb_matrix_set_color(LED_4, RGB_BLUE);
+        } else if ( is_cmd || is_ctrl ) { // Common Mac/PC shortcuts
+          // Palettes
+          rgb_matrix_set_color(LED_K, RGB_BLUE);
+          // Clipboard
+          rgb_matrix_set_color(LED_U, RGB_BLUE);
+          rgb_matrix_set_color(LED_B, RGB_BLUE);
+          rgb_matrix_set_color(LED_C, RGB_BLUE);
+          rgb_matrix_set_color(LED_V, RGB_BLUE);
+          // Save and undo
           rgb_matrix_set_color(LED_S, RGB_BLUE);
           rgb_matrix_set_color(LED_Z, RGB_BLUE);
+          // Superhuman
+          rgb_matrix_set_color(LED_ENT, RGB_BLUE);
         }
 
-        rgb_matrix_set_color(LED_1, RGB_BLUE);
-        rgb_matrix_set_color(LED_2, RGB_GOLD);
-        rgb_matrix_set_color(LED_3, RGB_BLUE);
-        rgb_matrix_set_color(LED_4, RGB_GOLD);
-        rgb_matrix_set_color(LED_5, RGB_BLUE);
-        rgb_matrix_set_color(LED_6, RGB_RED);
-        rgb_matrix_set_color(LED_7, RGB_GOLD);
-        rgb_matrix_set_color(LED_8, RGB_RED);
-        rgb_matrix_set_color(LED_9, RGB_GOLD);
-        rgb_matrix_set_color(LED_0, RGB_RED);
+        // Let's highlight faceless number keys.
+        rgb_matrix_set_color(LED_1, RGB_GOLD);
+        rgb_matrix_set_color(LED_3, RGB_GOLD);
+
+        // Middle pair
+        rgb_matrix_set_color(LED_5, RGB_GOLD);
+        rgb_matrix_set_color(LED_6, RGB_GOLD);
+
+        rgb_matrix_set_color(LED_8, RGB_GOLD);
+        rgb_matrix_set_color(LED_0, RGB_GOLD);
     }
   /* 
   Functions to suspend RGB when computer is off or sleeping
