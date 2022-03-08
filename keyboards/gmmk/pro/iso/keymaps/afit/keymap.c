@@ -62,13 +62,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+#define RGB_ALU    0xAD, 0xB2, 0xBD // Bare alu for GMMK Pro ice white
+#define HSV_ALU    213,  13,   200  // Bare alu for GMMK Pro ice white
+#define RGB_LOLITE 0x30, 0x7B, 0x84 // Slightly bluer
+#define RGB_HILITE 0x05, 0x52, 0xA4 // Punchier hilite colour
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     uint8_t temp_mod = get_mods();
     uint8_t temp_osm = get_oneshot_mods();
-    //bool    is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
-    //bool    is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
-    bool    is_cmd   = (temp_mod | temp_osm) & MOD_MASK_GUI;
+
+    bool is_cmd   = (temp_mod | temp_osm) & MOD_MASK_GUI;
 
     switch( get_highest_layer(layer_state) ) {
       case 1:
@@ -119,65 +122,65 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 #ifdef RGB_MATRIX_ENABLE
     // Caps lock, scroll lock and numlock indicator
     void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+        rgblight_sethsv_noeeprom( HSV_ALU );
+
         if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
-            rgb_matrix_set_color(LED_CAPS, RGB_GOLD);
+            rgb_matrix_set_color(LED_CAPS, RGB_LOLITE);
         }
 
         // Non-alpha keys
-        rgb_matrix_set_color(LED_HASH, RGB_GOLD);
-        rgb_matrix_set_color(LED_SLSH, RGB_GOLD);
-        rgb_matrix_set_color(LED_DOT, RGB_GOLD);
-        rgb_matrix_set_color(LED_COMM, RGB_GOLD);
+        rgb_matrix_set_color(LED_HASH, RGB_LOLITE);
+        rgb_matrix_set_color(LED_SLSH, RGB_LOLITE);
+        rgb_matrix_set_color(LED_DOT,  RGB_LOLITE);
+        rgb_matrix_set_color(LED_COMM, RGB_LOLITE);
 
-        rgb_matrix_set_color(LED_GRV, RGB_GOLD);
-        rgb_matrix_set_color(LED_SCLN, RGB_GOLD);
-        rgb_matrix_set_color(LED_RBRC, RGB_GOLD);
-        rgb_matrix_set_color(LED_LBRC, RGB_GOLD);
-        rgb_matrix_set_color(LED_QUOT, RGB_GOLD);
-        rgb_matrix_set_color(LED_COMM, RGB_GOLD);
-        rgb_matrix_set_color(LED_BSLS, RGB_GOLD);
+        rgb_matrix_set_color(LED_GRV,  RGB_LOLITE);
+        rgb_matrix_set_color(LED_SCLN, RGB_LOLITE);
+        rgb_matrix_set_color(LED_RBRC, RGB_LOLITE);
+        rgb_matrix_set_color(LED_LBRC, RGB_LOLITE);
+        rgb_matrix_set_color(LED_QUOT, RGB_LOLITE);
+        rgb_matrix_set_color(LED_COMM, RGB_LOLITE);
+        rgb_matrix_set_color(LED_BSLS, RGB_LOLITE);
                 
         // LED_TAB
-        //LED_CAPS
+        // LED_CAPS
 
         uint8_t temp_mod = get_mods();
         uint8_t temp_osm = get_oneshot_mods();
 
-        bool    is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
-        bool    is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
-        bool    is_cmd   = (temp_mod | temp_osm) & MOD_MASK_GUI;
+        bool is_ctrl  = (temp_mod | temp_osm) & MOD_MASK_CTRL;
+        bool is_shift = (temp_mod | temp_osm) & MOD_MASK_SHIFT;
+        bool is_cmd   = (temp_mod | temp_osm) & MOD_MASK_GUI;
 
         if ( is_cmd && is_shift ) {
           // Superhuman and palette apps
-          rgb_matrix_set_color(LED_H, RGB_BLUE);
+          rgb_matrix_set_color(LED_H, RGB_HILITE);
 
           // Selection-area screenshot
-          rgb_matrix_set_color(LED_4, RGB_BLUE);
+          rgb_matrix_set_color(LED_4, RGB_HILITE);
         } else if ( is_cmd || is_ctrl ) { // Common Mac/PC shortcuts
           // Palettes
-          rgb_matrix_set_color(LED_K, RGB_BLUE);
+          rgb_matrix_set_color(LED_K, RGB_HILITE);
           // Clipboard
-          rgb_matrix_set_color(LED_U, RGB_BLUE);
-          rgb_matrix_set_color(LED_B, RGB_BLUE);
-          rgb_matrix_set_color(LED_C, RGB_BLUE);
-          rgb_matrix_set_color(LED_V, RGB_BLUE);
+          rgb_matrix_set_color(LED_U, RGB_HILITE);
+          rgb_matrix_set_color(LED_B, RGB_HILITE);
+          rgb_matrix_set_color(LED_C, RGB_HILITE);
+          rgb_matrix_set_color(LED_V, RGB_HILITE);
           // Save and undo
-          rgb_matrix_set_color(LED_S, RGB_BLUE);
-          rgb_matrix_set_color(LED_Z, RGB_BLUE);
+          rgb_matrix_set_color(LED_S, RGB_HILITE);
+          rgb_matrix_set_color(LED_Z, RGB_HILITE);
           // Superhuman
-          rgb_matrix_set_color(LED_ENT, RGB_BLUE);
+          rgb_matrix_set_color(LED_ENT, RGB_HILITE);
         }
 
         // Let's highlight faceless number keys.
-        rgb_matrix_set_color(LED_1, RGB_GOLD);
-        rgb_matrix_set_color(LED_3, RGB_GOLD);
+        // First and last
+        rgb_matrix_set_color(LED_1, RGB_LOLITE);
+        rgb_matrix_set_color(LED_0, RGB_LOLITE);
 
         // Middle pair
-        rgb_matrix_set_color(LED_5, RGB_GOLD);
-        rgb_matrix_set_color(LED_6, RGB_GOLD);
-
-        rgb_matrix_set_color(LED_8, RGB_GOLD);
-        rgb_matrix_set_color(LED_0, RGB_GOLD);
+        rgb_matrix_set_color(LED_5, RGB_LOLITE);
+        rgb_matrix_set_color(LED_6, RGB_LOLITE);
     }
   /* 
   Functions to suspend RGB when computer is off or sleeping
