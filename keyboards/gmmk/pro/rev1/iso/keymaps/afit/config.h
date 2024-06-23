@@ -17,7 +17,11 @@
 #pragma once
 
 #undef DEBOUNCE
-#define DEBOUNCE 8
+// I see big chatter on Scarlet's keyboard at 8 & 12.
+// 20 fixes most of her keys. Frankly, I think it's duff
+// switches, and I should swap them and lower this back
+// down or remove it until I see chatter from other keys.
+#define DEBOUNCE 20
 
 #ifdef RGB_MATRIX_ENABLE
     #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_SOLID_COLOR
