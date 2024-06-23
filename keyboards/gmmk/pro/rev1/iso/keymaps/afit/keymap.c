@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include "rgb_matrix_map.h"
 
-// True horror: why you can't use a proper Mac fn key, and we need to 
+// True horror: why you can't use a proper Mac fn key, and we need to
 // play around to get an emoji picker instead, even though your MBP just
 // has an emoji/globe key: https://github.com/qmk/qmk_firmware/issues/2179
 #define KC_EMOJI LCTL(LCMD(KC_SPC))
@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [1] = LAYOUT(
-        RESET,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,                 KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_PSCR,          KC_MEDIA_PLAY_PAUSE,
+        QK_BOOT, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,                 KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_PSCR,          KC_MEDIA_PLAY_PAUSE,
         RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, KC_DEL,           KC_INS,
         RGB_MOD, _______, _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______,                   KC_VOLU,
         RGB_HUI, _______, _______, _______, _______, _______, _______, _______, _______,               _______, _______, _______, _______, _______,          KC_VOLD,
@@ -121,10 +121,12 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 
 #ifdef RGB_MATRIX_ENABLE
     // Caps lock, scroll lock and numlock indicator
-    void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgblight_sethsv_noeeprom( HSV_ALU );
 
-        if (IS_HOST_LED_ON(USB_LED_CAPS_LOCK)) {
+        led_t led_state = host_keyboard_led_state();
+
+        if (led_state.caps_lock) {
             rgb_matrix_set_color(LED_CAPS, RGB_LOLITE);
         }
 
@@ -141,7 +143,7 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         rgb_matrix_set_color(LED_QUOT, RGB_LOLITE);
         rgb_matrix_set_color(LED_COMM, RGB_LOLITE);
         rgb_matrix_set_color(LED_BSLS, RGB_LOLITE);
-                
+
         // LED_TAB
         // LED_CAPS
 
@@ -181,8 +183,10 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         // Middle pair
         rgb_matrix_set_color(LED_5, RGB_LOLITE);
         rgb_matrix_set_color(LED_6, RGB_LOLITE);
+
+        return false;
     }
-  /* 
+  /*
   Functions to suspend RGB when computer is off or sleeping
   See: https://beta.docs.qmk.fm/using-qmk/hardware-features/lighting/feature_rgb_matrix#suspended-state-id-suspended-state
   */
