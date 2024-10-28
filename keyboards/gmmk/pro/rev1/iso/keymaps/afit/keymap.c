@@ -22,7 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // play around to get an emoji picker instead, even though your MBP just
 // has an emoji/globe key: https://github.com/qmk/qmk_firmware/issues/2179
 #define KC_EMOJI LCTL(LCMD(KC_SPC))
-#define KC_ZOOM LCMD(LSFT(KC_A))
+// Mac Zoom
+//#define KC_ZOOM LCMD(LSFT(KC_A))
+// Windows Zoom
+#define KC_ZOOM LALT(LSFT(KC_A))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
